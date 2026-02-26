@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const categoryFilters = document.querySelectorAll(".category-filter");
   const dayFilters = document.querySelectorAll(".day-filter");
   const timeFilters = document.querySelectorAll(".time-filter");
+  const difficultyFilters = document.querySelectorAll(".difficulty-filter");
 
   // Authentication elements
   const loginButton = document.getElementById("login-button");
@@ -40,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let searchQuery = "";
   let currentDay = "";
   let currentTimeRange = "";
+  let currentDifficulty = "";
 
   // Authentication state
   let currentUser = null;
@@ -392,6 +394,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
 
+      // Handle difficulty filter
+      if (currentDifficulty) {
+        queryParams.push(`difficulty=${encodeURIComponent(currentDifficulty)}`);
+      }
+
       const queryString =
         queryParams.length > 0 ? `?${queryParams.join("&")}` : "";
       const response = await fetch(`/activities${queryString}`);
@@ -700,6 +707,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // Add event listeners for difficulty filter buttons
+  difficultyFilters.forEach((button) => {
+    button.addEventListener("click", () => {
+      // Update active class
+      difficultyFilters.forEach((btn) => btn.classList.remove("active"));
+      button.classList.add("active");
+
+      // Update current difficulty filter and fetch activities
+      currentDifficulty = button.dataset.difficulty;
+      fetchActivities();
+    });
+  });
+
   // Open registration modal
   function openRegistrationModal(activityName) {
     modalActivityName.textContent = activityName;
@@ -925,6 +945,30 @@ document.addEventListener("DOMContentLoaded", () => {
     setDayFilter,
     setTimeRangeFilter,
   };
+
+  // Dark mode toggle
+  const darkModeToggle = document.getElementById("dark-mode-toggle");
+
+  function applyDarkMode(isDark) {
+    if (isDark) {
+      document.body.classList.add("dark-mode");
+      darkModeToggle.textContent = "☀️";
+      darkModeToggle.setAttribute("aria-label", "Switch to light mode");
+    } else {
+      document.body.classList.remove("dark-mode");
+      darkModeToggle.textContent = "🌙";
+      darkModeToggle.setAttribute("aria-label", "Switch to dark mode");
+    }
+  }
+
+  // Load saved preference
+  applyDarkMode(localStorage.getItem("darkMode") === "true");
+
+  darkModeToggle.addEventListener("click", () => {
+    const isDark = !document.body.classList.contains("dark-mode");
+    localStorage.setItem("darkMode", isDark);
+    applyDarkMode(isDark);
+  });
 
   // Initialize app
   checkAuthentication();
