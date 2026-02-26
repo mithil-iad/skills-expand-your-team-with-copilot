@@ -617,6 +617,9 @@ footer {
   position: absolute;
   top: 10px;
   right: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 #user-status {
@@ -663,4 +666,56 @@ footer {
 
 #logout-button:hover {
   background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Dark mode toggle button */
+#dark-mode-toggle {
+  margin-right: 8px;
+  font-size: 1rem;
+  padding: 4px 10px;
+}
+
+/* Dark mode */
+body.dark-mode {
+  --background: #121212;
+  --surface: #1e1e1e;
+  --text-primary: #e0e0e0;
+  --text-secondary: #a0a0a0;
+  --border: #333333;
+  --border-light: #2a2a2a;
+  --border-focus: #444444;
+  --primary: #3949ab;
+  --primary-light: #6f74dd;
+  --primary-dark: #00227b;
+  --success-light: #1b3a1d;
+  --warning-light: #3a2e00;
+  --error-light: #3a0a0a;
+  --info-light: #0a2530;
+}
+
+body.dark-mode .activity-tag {
+  filter: brightness(0.75);
+}
+
+body.dark-mode .search-box input {
+  background-color: var(--surface);
+  color: var(--text-primary);
+}
+
+body.dark-mode .category-filter,
+body.dark-mode .day-filter,
+body.dark-mode .time-filter {
+  background-color: var(--surface);
+  color: var(--text-primary);
+}
+
+body.dark-mode .modal-content {
+  background-color: var(--surface);
+  color: var(--text-primary);
+}
+
+body.dark-mode .modal-content input {
+  background-color: var(--border-light);
+  color: var(--text-primary);
+  border-color: var(--border);
 }
